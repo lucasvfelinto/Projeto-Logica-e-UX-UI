@@ -9,20 +9,57 @@
 
 <body>
     <script>
+        let contas = [["Lucas Felinto", "22/10/2001", "81998650161", 1, 1000], ["Matheus Henrique", "21/06/2000", "81988834392", 2, 2000], ["Carlos Neto", "dd/mm/yyyy", "81995039593", 3, 3000]]
+
+        let numContas = 3
+
+        alert("Bem-vindo ao Banco do Recife")
+
+        criarConta()
 
         function criarConta() {
+            let novaConta = [];
+            let nome = prompt("Nome do Cliente:");
+            novaConta.push(nome);
 
+            let nascimento = prompt("Data de Nascimento (dd/mm/yyyy):");
+            novaConta.push(nascimento);
+
+            let telefone = prompt("Telefone:");
+            novaConta.push(telefone);
+
+            let nConta = ++numContas;
+            novaConta.push(nConta);
+
+            let saldo = 1000;
+            novaConta.push(saldo);
+
+            alert("Conta criada com sucesso, " + nome + "!")
+            
+            let mensagem = `
+            Informações da sua conta:
+            Nome: ${nome}
+            Data de Nascimento: ${nascimento}
+            Telefone: ${telefone}
+            Número da Conta: ${nConta}
+            Saldo Inicial: R$ ${saldo.toFixed(2)}
+
+            Agradecemos por escolher o Banco do Recife.`;
+
+            alert(mensagem)
+
+            contas.push(novaConta)
         }
 
         function transferencia() {
 
         }
 
-        function debitar() {
+        function sacar() {
 
         }
-        
-        function depositar(){
+
+        function depositar() {
 
         }
 
@@ -35,8 +72,12 @@
         }
 
     </script>
-    <input type="button" onclick="funcao1()" value="Função 1" />
-    <input type="button" onclick="funcao2()" value="Função 2" />
+    <input type="button" onclick="criarConta()" value="Criar Conta" />
+    <input type="button" onclick="transferencia()" value="Transferência" />
+    <input type="button" onclick="sacar()" value="Sacar" />
+    <input type="button" onclick="depositar()" value="Depositar" />
+    <input type="button" onclick="exibir()" value="Exibir Conta" />
+    <input type="button" onclick="remover()" value="Deletar Conta" />
 </body>
 
 </html>
