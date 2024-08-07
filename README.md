@@ -188,21 +188,7 @@ O objetivo deste projeto é desenvolver uma aplicação de operações bancária
 
   * #### É obrigatório o uso do GitHub para controle de versão e colaboração.
 
-#### 
 
-### 
-
-### 
-
-### 
-
-### 
-
-### 
-
-### 
-
-### 
 
 ### UX/UI
 
