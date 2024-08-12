@@ -53,7 +53,35 @@
 
         function transferencia() {
 
-        }
+    let contaOrigem = contas[contas.length - 1]; // Pessoal coloquei como a ultima conta criada ser sempre a de origem
+    let nContaDestino = parseInt(prompt("Número da conta de destino: "));
+    let valorTransferencia = parseFloat(prompt("Valor a ser transferido:"));
+
+    // Coloquei um limitante das contas 1,2 e 3 como destino do valor (Porém se colocar uma String ele ta reconhecendo como conta)
+    if (nContaDestino < 1 || nContaDestino > 3) {
+        alert("Esta conta não existe");
+        return;
+    }
+
+    let contaDestino = contas.find(conta => conta[3] === nContaDestino);
+
+    // Aqui coloquei para ver se há valor disponivel 
+    if (contaOrigem[4] < valorTransferencia) {
+        alert(" Saldo insuficiente ");
+        return;
+    }
+
+    // Realizar a transferência
+    contaOrigem[4] -= valorTransferencia;
+    contaDestino[4] += valorTransferencia;
+
+    alert(`Transferência de R$ ${valorTransferencia.toFixed(2)} realizada com sucesso!\n\n` +
+          `Novo saldo da sua conta (Conta nº ${contaOrigem[3]}): R$ ${contaOrigem[4].toFixed(2)}\n` +
+          `Novo saldo da conta de destino (Conta nº ${nContaDestino}): R$ ${contaDestino[4].toFixed(2)}`);
+          // Pensei em mostrar o saldo da conta destino, porém nao faz tanto sentido ! (o que vocês acham?) 
+}
+           
+
 
         function sacar() {
 
@@ -65,7 +93,25 @@
 
         function exibir() {
 
-        }
+    let contaCriada = contas[contas.length - 1]; // Última conta criada pelo usuário
+
+    let mensagem = "Saldos das Contas:\n\n";
+
+    // Exibir saldo da conta criada pelo usuário
+    mensagem += `Conta nº ${contaOrigem[3]} (Criada pelo usuário):\n` +
+                `Nome: ${contaOrigem[0]}\n` +
+                `Saldo: R$ ${contaOrigem[4].toFixed(2)}\n\n`;
+
+    // Exibir saldos das contas já existentes no sistema (1, 2 e 3)
+    for (let i = 0; i < 3; i++) {
+        let conta = contas[i];
+        mensagem += `Conta nº ${conta[3]}:\n` +
+                    `Nome: ${conta[0]}\n` +
+                    `Saldo: R$ ${conta[4].toFixed(2)}\n\n`;
+    }
+
+    alert(mensagem);
+}
 
         function remover() {
 
