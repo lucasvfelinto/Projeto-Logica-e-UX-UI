@@ -51,13 +51,26 @@
             contas.push(novaConta)
         }
 
-        function buscarContaPorNumero(numeroConta) {
+        function buscarConta(numeroConta) {
             for (let i = 0; i < contas.length; i++) {
                 if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
                     return contas[i]; // Retorna a conta encontrada
                 }
             }
             return null; // Retorna null se a conta não for encontrada
+        }
+
+        function verificarSaldo(numeroConta, valor) {
+            for (let i = 0; i < contas.length; i++) {
+                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
+                    if (contas[i][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
+                        return { saldoSuficiente: true, saldoAtual: contas[i][4] }; // Retorna um objeto com o saldo suficiente e o saldo atual
+                    } else {
+                        return { saldoSuficiente: false, saldoAtual: contas[i][4] }; // Retorna um objeto indicando saldo insuficiente e o saldo atual
+                    }
+                }
+            }
+            return { saldoSuficiente: false, saldoAtual: null }; // Retorna falso e null se a conta não for encontrada
         }
 
         function transferencia() {
@@ -68,7 +81,27 @@
             let numConta = parseInt(prompt("Numero da conta:"))
             let valor = parseFloat(prompt("Valor para saque:"))
 
+            let contaValida = buscarConta(numConta)
 
+            if (!contaValida) {
+                alert("Conta não encontrada.");
+                return;
+            }
+
+            let saldoValido = verificarSaldo(numConta, valor)
+
+            if (saldoValido.saldoSuficiente) {
+                for (let i = 0; i < contas.length; i++) {
+                    if (contas[i][3] === numConta) {
+                        contas[i][4] -= valor; // Subtrai o valor do saldo
+                        alert(`Saque de R$${valor} realizado com sucesso. Saldo atual: R$${contas[i][4]}`);
+                        return;
+                    }
+                }
+            } else {
+                alert(`Saldo insuficiente. Saldo atual: R$${saldoValido.saldoAtual}`);
+                return;
+            }
         }
 
         function depositar() {
