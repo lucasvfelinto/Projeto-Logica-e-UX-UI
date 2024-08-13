@@ -35,7 +35,7 @@
             novaConta.push(saldo);
 
             alert("Conta criada com sucesso, " + nome + "!")
-            
+
             let mensagem = `
             Informações da sua conta:
             Nome: ${nome}
@@ -51,11 +51,23 @@
             contas.push(novaConta)
         }
 
+        function buscarContaPorNumero(numeroConta) {
+            for (let i = 0; i < contas.length; i++) {
+                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
+                    return contas[i]; // Retorna a conta encontrada
+                }
+            }
+            return null; // Retorna null se a conta não for encontrada
+        }
+
         function transferencia() {
 
         }
 
         function sacar() {
+            let numConta = parseInt(prompt("Numero da conta:"))
+            let valor = parseFloat(prompt("Valor para saque:"))
+
 
         }
 
