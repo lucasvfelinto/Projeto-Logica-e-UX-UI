@@ -60,17 +60,12 @@
             return -1; // Retorna -1 se a conta não for encontrada
         }
 
-        function verificarSaldo(numeroConta, valor) {
-            for (let i = 0; i < contas.length; i++) {
-                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
-                    if (contas[i][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
-                        return { saldoSuficiente: true, saldoAtual: contas[i][4] }; // Retorna um objeto com o saldo suficiente e o saldo atual
-                    } else {
-                        return { saldoSuficiente: false, saldoAtual: contas[i][4] }; // Retorna um objeto indicando saldo insuficiente e o saldo atual
-                    }
-                }
+        function verificarSaldoSaque(indiceConta, valor) {
+            if (contas[indiceConta][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
+                return true;
+            } else {
+                return false;
             }
-            return { saldoSuficiente: false, saldoAtual: null }; // Retorna falso e null se a conta não for encontrada
         }
 
         function transferencia() {
@@ -89,6 +84,13 @@
             Número da Conta: ${contas[indiceContaOrigem][3]}
             Saldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}`;
             alert(mensagem);
+            // Solicitar o valor da transferência
+            let valorTransferencia = parseFloat(prompt("Valor a ser transferido:"));
+            let saldoValido = verificarSaldoSaque(indiceContaOrigem, valorTransferencia)
+            if (!saldoValido) {
+                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${saldoValido.toFixed(2)}\nValor Tentado: R$${valorTransferencia.toFixed(2)}`)
+                return;
+            }
 
             let numContaDestino = parseInt(prompt("Número da conta de destino:"));
 
@@ -106,8 +108,7 @@
             Número da Conta: ${contas[indiceContaDestino][3]}`;
             alert(mensagem2);
 
-            // Solicitar o valor da transferência
-            let valorTransferencia = parseFloat(prompt("Valor a ser transferido:"));
+
 
             // Verificar se há saldo suficiente na conta de origem
             if (contaOrigem[4] < valorTransferencia) {
