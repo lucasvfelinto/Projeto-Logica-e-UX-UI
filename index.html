@@ -60,6 +60,19 @@
             return -1; // Retorna -1 se a conta não for encontrada
         }
 
+        function verificarSaldo(numeroConta, valor) {
+            for (let i = 0; i < contas.length; i++) {
+                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
+                    if (contas[i][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
+                        return { saldoSuficiente: true, saldoAtual: contas[i][4] }; // Retorna um objeto com o saldo suficiente e o saldo atual
+                    } else {
+                        return { saldoSuficiente: false, saldoAtual: contas[i][4] }; // Retorna um objeto indicando saldo insuficiente e o saldo atual
+                    }
+                }
+            }
+            return { saldoSuficiente: false, saldoAtual: null }; // Retorna falso e null se a conta não for encontrada
+        }
+
         function transferencia() {
             let numContaOrigem = parseInt(prompt("Número da conta de origem:"));
 
