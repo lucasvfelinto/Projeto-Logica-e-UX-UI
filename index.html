@@ -44,33 +44,29 @@
             Número da Conta: ${nConta}
             Saldo Inicial: R$ ${saldo.toFixed(2)}
 
-            Agradecemos por escolher o Banco do Recife.`;
+            Agradecemos por escolher o Banco do Recife.`
 
             alert(mensagem)
 
             contas.push(novaConta)
+            return;
         }
 
-        function buscarConta(numeroConta) {
+        function buscarIndiceConta(numeroConta) {
             for (let i = 0; i < contas.length; i++) {
                 if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
-                    return contas[i]; // Retorna a conta encontrada
+                    return i; // Retorna o índice da conta encontrada
                 }
             }
-            return null; // Retorna null se a conta não for encontrada
+            return -1; // Retorna -1 se a conta não for encontrada
         }
 
-        function verificarSaldo(numeroConta, valor) {
-            for (let i = 0; i < contas.length; i++) {
-                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
-                    if (contas[i][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
-                        return { saldoSuficiente: true, saldoAtual: contas[i][4] }; // Retorna um objeto com o saldo suficiente e o saldo atual
-                    } else {
-                        return { saldoSuficiente: false, saldoAtual: contas[i][4] }; // Retorna um objeto indicando saldo insuficiente e o saldo atual
-                    }
-                }
+        function verificarSaldoSaque(indiceConta, valor) {
+            if (contas[indiceConta][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
+                return  true; 
+            } else {
+                return false; 
             }
-            return { saldoSuficiente: false, saldoAtual: null }; // Retorna falso e null se a conta não for encontrada
         }
 
         function transferencia() {
@@ -81,25 +77,19 @@
             let numConta = parseInt(prompt("Numero da conta:"))
             let valor = parseFloat(prompt("Valor para saque:"))
 
-            let contaValida = buscarConta(numConta)
-
-            if (!contaValida) {
-                alert("Conta não encontrada.");
+            let indiceConta = buscarIndiceConta(numConta)
+            if (indiceConta == -1) {
+                alert("Conta de Origem não encontrada.")
                 return;
             }
 
-            let saldoValido = verificarSaldo(numConta, valor)
-
-            if (saldoValido.saldoSuficiente) {
-                for (let i = 0; i < contas.length; i++) {
-                    if (contas[i][3] === numConta) {
-                        contas[i][4] -= valor; // Subtrai o valor do saldo
-                        alert(`Saque de R$${valor} realizado com sucesso. Saldo atual: R$${contas[i][4]}`);
-                        return;
-                    }
-                }
+            let saldoValido = verificarSaldoSaque(indiceConta, valor)
+            if (saldoValido) {
+                contas[indiceConta][4] -= valor // Subtrai o valor do saldo
+                alert(`Saque realizado com sucesso!\nValor Sacado: R$${valor.toFixed(2)}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}`)
+                return;
             } else {
-                alert(`Saldo insuficiente. Saldo atual: R$${saldoValido.saldoAtual}`);
+                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${saldoValido.saldoAtual.toFixed(2)}\nValor Tentado: R$${valor.toFixed(2)}`)
                 return;
             }
         }
