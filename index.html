@@ -63,9 +63,9 @@
 
         function verificarSaldoSaque(indiceConta, valor) {
             if (contas[indiceConta][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
-                return  true; 
+                return true;
             } else {
-                return false; 
+                return false;
             }
         }
 
@@ -84,14 +84,14 @@
             }
 
             let saldoValido = verificarSaldoSaque(indiceConta, valor)
-            if (saldoValido) {
-                contas[indiceConta][4] -= valor // Subtrai o valor do saldo
-                alert(`Saque realizado com sucesso!\nValor Sacado: R$${valor.toFixed(2)}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}`)
-                return;
-            } else {
+            if (!saldoValido) {
                 alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${saldoValido.saldoAtual.toFixed(2)}\nValor Tentado: R$${valor.toFixed(2)}`)
                 return;
             }
+            contas[indiceConta][4] -= valor // Subtrai o valor do saldo
+            
+            alert(`Saque realizado com sucesso!\nValor Sacado: R$${valor.toFixed(2)}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}`)
+            return;
         }
 
         function depositar() {
