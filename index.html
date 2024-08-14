@@ -107,28 +107,28 @@
 
         function exibir() {
 
-    let nConta = parseInt(prompt("Digite o número da sua conta:"));
+    let Conta = parseInt(prompt("Digite o número da sua conta:"));
     let dataNascimento = prompt("Digite sua data de nascimento (dd/mm/yyyy):");
 
     // Verificar se a conta existe e se a data de nascimento está correta
-    let contaCriada = contas.find(conta => conta[3] === nConta && conta[1] === dataNascimento);
+    let contas = contas.find(conta => conta[3] === nConta && conta[1] === dataNascimento);
 
-    if (!contaCriada) {
+    if (contas) {
         alert("Conta não encontrada ou data de nascimento incorreta!");
         return;
     }
 
     // Exibir saldo da conta do usuário
-    let mensagem = `Saldo da sua conta (Conta nº ${contaCriada[3]}):\n` +
-                   `Nome: ${contaCriada[0]}\n` +
-                   `Saldo: R$ ${contaCriada[4].toFixed(2)}\n\n`;
+    let mensagem = `Saldo da sua conta (Conta nº ${contas[3]}):\n` +
+                   `Nome: ${contas[0]}\n` +
+                   `Saldo: R$ ${contas[3].toFixed(2)}\n\n`;
 
     // Exibir saldos das outras contas já existentes no sistema (1, 2 e 3)
     for (let i = 0; i < 3; i++) {
         let conta = contas[i];
-        mensagem += `Conta nº ${conta[3]}:\n` +
+        mensagem += `Conta nº ${conta[4]}:\n` +
                     `Nome: ${conta[0]}\n` +
-                    `Saldo: R$ ${conta[4].toFixed(2)}\n\n`;
+                    `Saldo: R$ ${conta[3].toFixed(2)}\n\n`;
     }
 }
 
