@@ -75,13 +75,14 @@
 
         function sacar() {
             let numConta = parseInt(prompt("Numero da conta:"))
-            let valor = parseFloat(prompt("Valor para saque:"))
 
             let indiceConta = buscarIndiceConta(numConta)
             if (indiceConta == -1) {
-                alert("Conta de Origem não encontrada.")
+                alert("Conta de não encontrada.")
                 return;
             }
+
+            let valor = parseFloat(prompt("Valor para saque:"))
 
             let saldoValido = verificarSaldoSaque(indiceConta, valor)
             if (!saldoValido) {
@@ -89,13 +90,29 @@
                 return;
             }
             contas[indiceConta][4] -= valor // Subtrai o valor do saldo
-            
+
             alert(`Saque realizado com sucesso!\nValor Sacado: R$${valor.toFixed(2)}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}`)
             return;
         }
 
         function depositar() {
+            let numConta = parseInt(prompt("Numero da conta:"))
 
+            let indiceConta = buscarIndiceConta(numConta)
+            if (indiceConta == -1) {
+                alert("Conta de não encontrada.")
+                return;
+            }
+
+            alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+
+            let valor = parseFloat(prompt("Valor para Depósito:"))
+
+            // Realiza o depósito
+            contas[indiceConta][4] += valor
+
+            alert(`Operação realizada com sucesso!\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nValor de depósito de R$ ${valor.toFixed(2)}\n\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+            return;
         }
 
         function exibir() {
