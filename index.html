@@ -36,17 +36,7 @@
 
             alert("Conta criada com sucesso, " + nome + "!")
 
-            let mensagem = `
-            Informações da sua conta:
-            Nome: ${nome}
-            Data de Nascimento: ${nascimento}
-            Telefone: ${telefone}
-            Número da Conta: ${nConta}
-            Saldo Inicial: R$ ${saldo.toFixed(2)}
-
-            Agradecemos por escolher o Banco do Recife.`
-
-            alert(mensagem)
+            alert(`Informações da sua conta:\n\nNome: ${nome}\nData de Nascimento: ${nascimento}\nTelefone: ${telefone}\nNúmero da Conta: ${nConta}\nSaldo Inicial: R$ ${saldo.toFixed(2)}\nAgradecemos por escolher o Banco do Recife.`)
 
             contas.push(novaConta)
             return;
