@@ -67,21 +67,28 @@
             let numConta = parseInt(prompt("Numero da conta:"))
 
             let indiceConta = buscarIndiceConta(numConta)
+
             if (indiceConta == -1) {
                 alert("Conta de não encontrada.")
                 return;
             }
-
+            
+            alert(`Dados da conta:\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+            
             let valor = parseFloat(prompt("Valor para saque:"))
 
             let saldoValido = verificarSaldoSaque(indiceConta, valor)
+
             if (!saldoValido) {
-                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${saldoValido.saldoAtual.toFixed(2)}\nValor Tentado: R$${valor.toFixed(2)}`)
+                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}\nValor Tentado: R$${valor.toFixed(2)}`)
                 return;
             }
-            contas[indiceConta][4] -= valor // Subtrai o valor do saldo
 
-            alert(`Saque realizado com sucesso!\nValor Sacado: R$${valor.toFixed(2)}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}`)
+            contas[indiceConta][4] -= valor
+
+            alert(`Saque de R$${valor.toFixed(2)} realizado com sucesso!\n\nDados da conta:\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}\n\nValor Sacado: R$${valor.toFixed(2)}`)
+            
+            
             return;
         }
 
@@ -89,6 +96,7 @@
             let numConta = parseInt(prompt("Numero da conta:"))
 
             let indiceConta = buscarIndiceConta(numConta)
+
             if (indiceConta == -1) {
                 alert("Conta de não encontrada.")
                 return;
@@ -98,7 +106,6 @@
 
             let valor = parseFloat(prompt("Valor para Depósito:"))
 
-            // Realiza o depósito
             contas[indiceConta][4] += valor
 
             alert(`Operação realizada com sucesso!\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nValor de depósito de R$ ${valor.toFixed(2)}\n\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
