@@ -9,186 +9,188 @@
 
 <body>
     <script>
-        let contas = [["Lucas Felinto", "22/10/2001", "81998650161", 1, 1000], ["Matheus Henrique", "21/06/2000", "81988834392", 2, 2000], ["Carlos Neto", "dd/mm/yyyy", "81995039593", 3, 3000]]
+        let contas = [
+            ["Lucas Felinto", "22/10/2001", "81998650161", 1, 1000],
+            ["Matheus Henrique", "21/06/2000", "81988834392", 2, 2000],
+            ["Carlos Neto", "dd/mm/yyyy", "81995039593", 3, 3000]
+        ]
 
-        let numContas = 3
+        let numContas = contas.length;
 
         alert("Bem-vindo ao Banco do Recife")
 
         criarConta()
 
         function criarConta() {
-            let novaConta = [];
-            let nome = prompt("Nome do Cliente:");
-            novaConta.push(nome);
+            let nome = prompt("Nome do Cliente:")
+            while (!nome) {
+                alert("Nome não pode estar vazio.")
+                nome = prompt("Nome do Cliente:")
+            }
 
             let nascimento = prompt("Data de Nascimento (dd/mm/yyyy):");
-            novaConta.push(nascimento);
+            let regexData = /^\d{2}\/\d{2}\/\d{4}$/
+            while (!nascimento || !regexData.test(nascimento)) {
+                alert("Data de nascimento inválida.")
+                nascimento = prompt("Data de Nascimento (dd/mm/yyyy):")
 
-            let telefone = prompt("Telefone:");
-            novaConta.push(telefone);
+            }
 
-            let nConta = ++numContas;
-            novaConta.push(nConta);
+            let telefone = prompt("Telefone (88900000000):");
+            let regexTelefone = /^\d{10,11}$/
+            while (!telefone || !regexTelefone.test(telefone)) {
+                alert("Telefone inválido.")
+                telefone = prompt("Telefone (88900000000):")
+            }
 
+            let numeroConta = ++numContas;
             let saldo = 1000;
-            novaConta.push(saldo);
 
-            alert(`Conta criada com sucesso, ${nome}!`)
+            let mensagem = `Confirme seus dados:\n\nNome: ${nome}\nData de Nascimento: ${nascimento}\nTelefone: ${telefone}\nNúmero da Conta: ${numeroConta}\nSaldo Inicial: R$ ${saldo.toFixed(2)}\n\nDeseja prosseguir com a criação da conta?`
 
-            alert(`Informações da sua conta:\n\nNome: ${nome}\nData de Nascimento: ${nascimento}\nTelefone: ${telefone}\nNúmero da Conta: ${nConta}\nSaldo Inicial: R$ ${saldo.toFixed(2)}\n\nAgradecemos por escolher o Banco do Recife.`);
+            if (!confirm(mensagem)) {
+                alert("Criação de conta cancelada.");
+                return;
+            }
 
-            contas.push(novaConta)
-            return;
+            contas.push([nome, nascimento, telefone, numeroConta, saldo]);
+
+            alert(`Conta criada com sucesso, ${nome}!`);
         }
 
         function buscarIndiceConta(numeroConta) {
-            for (let i = 0; i < contas.length; i++) {
-                if (contas[i][3] === numeroConta) { // Verifica se o número da conta corresponde ao número buscado
-                    return i; // Retorna o índice da conta encontrada
-                }
-            }
-            return -1; // Retorna -1 se a conta não for encontrada
+            return contas.findIndex(conta => conta[3] === numeroConta);
         }
 
         function verificarSaldoSaque(indiceConta, valor) {
-            if (contas[indiceConta][4] >= valor) { // Verifica se o saldo é suficiente para o valor solicitado
-                return true;
-            } else {
-                return false;
-            }
+            return contas[indiceConta][4] >= valor;
         }
 
         function transferencia() {
             let numContaOrigem = parseInt(prompt("Número da conta de origem:"));
+            let indiceContaOrigem = buscarIndiceConta(numContaOrigem)
 
-            // Busca o indice da conta e valida
-            let indiceContaOrigem = buscarIndiceConta(numContaOrigem);
             if (indiceContaOrigem == -1) {
                 alert("Conta de Origem não encontrada.");
                 return;
             }
 
-            // Exibi dados da Conta de Origem
             alert(`Dados da conta de Origem:\n\nNome: ${contas[indiceContaOrigem][0]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}`)
-            
 
-            // Solicita o valor da transferência
             let valorTransferencia = parseFloat(prompt("Valor a ser transferido:"));
+            if (isNaN(valorTransferencia) || valorTransferencia <= 0) {
+                alert("Valor de transferência inválido.");
+                return;
+            }
 
-            // Verifica se o saldo é suficiente antes da operação
-            let saldoValido = verificarSaldoSaque(indiceContaOrigem, valorTransferencia)
-            if (!saldoValido) {
-                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${contas[indiceContaOrigem][4].toFixed(2)}\nValor Tentado: R$${valorTransferencia.toFixed(2)}`)
+            if (!verificarSaldoSaque(indiceContaOrigem, valorTransferencia)) {
+                alert(`Saldo insuficiente para realizar a transferência.\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}\nValor Tentado: R$ ${valorTransferencia.toFixed(2)}`)
                 return;
             }
 
             let numContaDestino = parseInt(prompt("Número da conta de destino:"));
-
-            // Verifica se a conta de destino é a mesma que a de origem
             if (numContaDestino === numContaOrigem) {
                 alert("Não é possível transferir para a mesma conta.");
                 return;
             }
-            // Busca o indice da conta e valida
+
             let indiceContaDestino = buscarIndiceConta(numContaDestino);
             if (indiceContaDestino == -1) {
                 alert("Conta de Destino não encontrada.");
                 return;
             }
 
-            // Exibi dados da Conta de Destino
             alert(`Dados da conta de Destino:\n\nNome: ${contas[indiceContaDestino][0]}\nNúmero da Conta: ${contas[indiceContaDestino][3]}`);
-            
 
-            // Realizar a transferência
+            let confirmacao = confirm(`Você confirma a transferência de R$ ${valorTransferencia.toFixed(2)} da conta ${numContaOrigem} para a conta ${numContaDestino}?`);
+
+            if (!confirmacao) {
+                alert("Transferência cancelada.");
+                return;
+            }
+
             contas[indiceContaOrigem][4] -= valorTransferencia;
             contas[indiceContaDestino][4] += valorTransferencia;
 
-            alert(`Transferência de R$${valorTransferencia.toFixed(2)} realizada com sucesso!\n\nDados da conta de origem:\nNome: ${contas[indiceContaOrigem][0]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$${contas[indiceContaOrigem][4].toFixed(2)}\n\nDados da conta de destino:\nNome: ${contas[indiceContaDestino][0]}\nNúmero da Conta: ${contas[indiceContaDestino][3]}`)
-            return;
+            alert(`Transferência de R$ ${valorTransferencia.toFixed(2)} realizada com sucesso!\n\nDados da conta de origem:\nNome: ${contas[indiceContaOrigem][0]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}\n\nDados da conta de destino:\nNome: ${contas[indiceContaDestino][0]}\nNúmero da Conta: ${contas[indiceContaDestino][3]}`)
         }
         function sacar() {
             let numConta = parseInt(prompt("Numero da conta:"))
-
             let indiceConta = buscarIndiceConta(numConta)
 
             if (indiceConta == -1) {
-                alert("Conta de não encontrada.")
+                alert("Conta não encontrada.")
                 return;
             }
-            
+
             alert(`Dados da conta:\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
-            
+
             let valor = parseFloat(prompt("Valor para saque:"))
+            if (isNaN(valor) || valor <= 0) {
+                alert("Valor de saque inválido.");
+                return;
+            }
 
-            let saldoValido = verificarSaldoSaque(indiceConta, valor)
-
-            if (!saldoValido) {
-                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}\nValor Tentado: R$${valor.toFixed(2)}`)
+            if (!verificarSaldoSaque(indiceConta, valor)) {
+                alert(`Saldo insuficiente para realizar o saque.\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}\nValor Tentado: R$ ${valor.toFixed(2)}`)
                 return;
             }
 
             contas[indiceConta][4] -= valor
 
-            alert(`Saque de R$${valor.toFixed(2)} realizado com sucesso!\n\nDados da conta:\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$${contas[indiceConta][4].toFixed(2)}\n\nValor Sacado: R$${valor.toFixed(2)}`)
-            
-            
-            return;
+            alert(`Saque de R$ ${valor.toFixed(2)} realizado com sucesso!\n\nDados da conta:\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}\n\nValor Sacado: R$ ${valor.toFixed(2)}`)
         }
 
         function depositar() {
             let numConta = parseInt(prompt("Numero da conta:"))
-
             let indiceConta = buscarIndiceConta(numConta)
 
             if (indiceConta == -1) {
-                alert("Conta de não encontrada.")
+                alert("Conta não encontrada.")
                 return;
             }
 
             alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
 
-            let valor = parseFloat(prompt("Valor para Depósito:"))
+            let valor = parseFloat(prompt("Valor para Depósito:"));
+            if (isNaN(valor) || valor <= 0) {
+                alert("Valor de depósito inválido.");
+                return;
+            }
 
             contas[indiceConta][4] += valor
 
             alert(`Operação realizada com sucesso!\n\nNome: ${contas[indiceConta][0]}\nNúmero da Conta: ${contas[indiceConta][3]}\nValor de depósito de R$ ${valor.toFixed(2)}\n\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
-            return;
         }
 
         function exibir() {
             let numConta = parseInt(prompt("Digite o número da conta a exibir:"));
+            let indiceConta = buscarIndiceConta(numConta)
 
-            // Busca o indice da conta e valida
-            let indiceConta = buscarIndiceConta(numConta);
             if (indiceConta == -1) {
-                alert("Conta não encontrada.");
+                alert("Conta não encontrada.")
                 return;
             }
 
-            // Exibi dados da conta do usuário
-            alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)        
+            alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
             return;
         }
 
         function exibirTodasAsContas() {
-            for (let i = 0; i < contas.length; i++) {
-                let indiceConta = buscarIndiceConta(i + 1);
+            for (let i = 1; i <= contas.length; i++) {
+                let indiceConta = buscarIndiceConta(i);
                 if (indiceConta == -1) {
                     alert("Conta não encontrada.");
                 } else {
-                    alert(`Informações da conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`);
-                    
+                    alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+
                 }
             }
             return;
         }
 
         function remover() {
-            let numConta = parseInt(prompt("Digite o número da conta a exibir:"));
-
-            // Busca o indice da conta e valida
+            let numConta = parseInt(prompt("Digite o número da conta a remover:"));
             let indiceConta = buscarIndiceConta(numConta);
 
             if (indiceConta == -1) {
@@ -196,10 +198,8 @@
                 return;
             }
 
-            // funcao que descobri no final do projeto, mas seria aplicavel nas confimaçoes anteriores
             let confirmacao = confirm(`Deseja realmente excluir esta conta?\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
-
-            if (!confirmacao){
+            if (!confirmacao) {
                 //se o usuário clicar em "Cancelar"
                 alert("Ação cancelada.")
                 return;
