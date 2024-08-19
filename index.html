@@ -117,16 +117,35 @@
         }
 
         function remover() {
+            let numConta = parseInt(prompt("Digite o número da conta a exibir:"));
 
+            // Busca o indice da conta e valida
+            let indiceConta = buscarIndiceConta(numConta);
+
+            if (indiceConta == -1) {
+                alert("Conta não encontrada.");
+                return;
+            }
+
+            let confirmacao = confirm(`Deseja realmente excluir esta conta?\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+
+            if (!confirmacao){
+                //se o usuário clicar em "Cancelar"
+                alert("Ação cancelada.")
+                return;
+            }
+            contas.splice(indiceConta, 1);
+
+            alert("Conta excluída com sucesso!");
+            return;
         }
-
     </script>
     <input type="button" onclick="criarConta()" value="Criar Conta" />
     <input type="button" onclick="transferencia()" value="Transferência" />
     <input type="button" onclick="sacar()" value="Sacar" />
     <input type="button" onclick="depositar()" value="Depositar" />
     <input type="button" onclick="exibir()" value="Exibir Conta" />
-    <input type="button" onclick="remover()" value="Deletar Conta" />
+    <input type="button" onclick="remover()" value="Remover Conta" />
 </body>
 
 </html>
