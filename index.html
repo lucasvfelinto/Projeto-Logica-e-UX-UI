@@ -70,7 +70,7 @@
 
             // Exibi dados da Conta de Origem
             alert(`Dados da conta de Origem:\n\nNome: ${contas[indiceContaOrigem][0]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}`)
-            
+
 
             // Solicita o valor da transferência
             let valorTransferencia = parseFloat(prompt("Valor a ser transferido:"));
@@ -98,7 +98,7 @@
 
             // Exibi dados da Conta de Destino
             alert(`Dados da conta de Destino:\n\nNome: ${contas[indiceContaDestino][0]}\nNúmero da Conta: ${contas[indiceContaDestino][3]}`);
-            
+
 
             // Realizar a transferência
             contas[indiceContaOrigem][4] -= valorTransferencia;
@@ -116,35 +116,56 @@
         }
 
         function exibir() {
-            let numContaOrigem = parseInt(prompt("Digite o número da conta a exibir:"));
+            let numConta = parseInt(prompt("Digite o número da conta a exibir:"));
 
             // Busca o indice da conta e valida
-            let indiceContaOrigem = buscarIndiceConta(numContaOrigem);
-            if (indiceContaOrigem == -1) {
+            let indiceConta = buscarIndiceConta(numConta);
+            //Poderiamos usar um indexOf, mas so lembrei depois de terminar
+            if (indiceConta == -1) {
                 alert("Conta não encontrada.");
                 return;
             }
 
             // Exibi dados da conta do usuário
-            alert(`Informações da sua conta:\n\nNome: ${contas[indiceContaOrigem][0]}\nData de Nascimento: ${contas[indiceContaOrigem][1]}\nTelefone: ${contas[indiceContaOrigem][2]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}`)        
+            alert(`Informações da sua conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
             return;
         }
 
         function exibirTodasAsContas() {
             for (let i = 0; i < contas.length; i++) {
-                let indiceContaOrigem = buscarIndiceConta(i + 1);
-                if (indiceContaOrigem == -1) {
+                let indiceConta = buscarIndiceConta(i + 1);
+                if (indiceConta == -1) {
                     alert("Conta não encontrada.");
                 } else {
-                    alert(`Informações da conta:\n\nNome: ${contas[indiceContaOrigem][0]}\nData de Nascimento: ${contas[indiceContaOrigem][1]}\nTelefone: ${contas[indiceContaOrigem][2]}\nNúmero da Conta: ${contas[indiceContaOrigem][3]}\nSaldo Atual: R$ ${contas[indiceContaOrigem][4].toFixed(2)}`);
-                    
+                    alert(`Informações da conta:\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`);
+
                 }
             }
             return;
         }
 
         function remover() {
+            let numConta = parseInt(prompt("Digite o número da conta a exibir:"));
 
+            // Busca o indice da conta e valida
+            let indiceConta = buscarIndiceConta(numConta);
+
+            if (indiceConta == -1) {
+                alert("Conta não encontrada.");
+                return;
+            }
+
+            let confirmacao = confirm(`Deseja realmente excluir esta conta?\n\nNome: ${contas[indiceConta][0]}\nData de Nascimento: ${contas[indiceConta][1]}\nTelefone: ${contas[indiceConta][2]}\nNúmero da Conta: ${contas[indiceConta][3]}\nSaldo Atual: R$ ${contas[indiceConta][4].toFixed(2)}`)
+
+            if (!confirmacao){
+                //se o usuário clicar em "Cancelar"
+                alert("Ação cancelada.")
+                return;
+            }
+            contas.splice(indiceConta, 1);
+            
+            alert("Conta excluída com sucesso!");
+            return;
         }
 
     </script>
