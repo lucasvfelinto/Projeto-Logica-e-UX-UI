@@ -16,10 +16,12 @@
             [1, 2, 3],                                              // Números das Contas
             [1000, 2000, 3000]                                     // Saldos
         ];
-        
-        let numContas = contas[3].length;
 
-        alert("Bem-vindo ao Banco do Recife");
+        let numContas = contas[3].length;
+        
+        alert("Bem-vindo ao Banco do Recife")
+
+        criarConta()
 
         function criarConta() {
             let nome = prompt("Nome do Cliente:");
@@ -181,11 +183,15 @@
         }
 
         function exibirTodasAsContas() {
-            let mensagem = 'Informações de todas as contas:\n\n';
-            for (let i = 0; i < contas[0].length; i++) {
-                mensagem += `Nome: ${contas[0][i]}\nData de Nascimento: ${contas[1][i]}\nTelefone: ${contas[2][i]}\nNúmero da Conta: ${contas[3][i]}\nSaldo Atual: R$ ${contas[4][i].toFixed(2)}\n\n`;
+            for (let i = 1; i <= contas[0].length; i++) {
+                let indiceConta = buscarIndiceConta(i);
+                if (indiceConta == -1) {
+                    alert("Conta não encontrada.");
+                } else {
+                    alert(`Informações da conta:\n\nNome: ${contas[0][indiceConta]}\nData de Nascimento: ${contas[1][indiceConta]}\nTelefone: ${contas[2][indiceConta]}\nNúmero da Conta: ${contas[3][indiceConta]}\nSaldo Atual: R$ ${contas[4][indiceConta].toFixed(2)}`)
+                }
             }
-            alert(mensagem);
+            return
         }
 
         function remover() {
